@@ -11,6 +11,14 @@ const outDir = process.env.MAKEFUN_OUTPUT_DIR || "/output";
 
 try {
   const data = readFileSync(join(here, "entry.txt"));
+  const text = data.toString("utf8");
+  const glyphCount = [...text].length;
+  if (glyphCount < 1 || glyphCount > 140 || text.trim().length === 0) {
+    console.error(
+      `entry.txt must hold 1-140 characters of non-blank text, got ${glyphCount} characters`
+    );
+    process.exit(1);
+  }
   mkdirSync(outDir, { recursive: true });
   writeFileSync(join(outDir, "entry.txt"), data);
 } catch (err) {
